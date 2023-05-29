@@ -33,7 +33,9 @@ public class TelaLogin {
 
 	private JLabel lblDisable;
 	private JLabel lblShow;
-
+	
+	private TelaCadastroUsuario telaCadastro;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -61,15 +63,23 @@ public class TelaLogin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		JPanel panel = new JPanel();
 		frame = new JFrame();
+
+		
+		//tirar botoes
+	 	frame.setUndecorated(true);
+	 	
+	 	//mover componentes no painel
+	 	panel.setLayout(null);
+	 	
 		frame.setBounds(100, 100, 901, 491);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		JPanel panel = new JPanel();
-		panel.setBounds(-26, -29, 466, 483);
+		
+		panel.setBounds(-26, -29, 466, 520);
 		frame.getContentPane().add(panel);
-		panel.setLayout(null);
+		
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("D:\\Downloads\\.opera\\LoginForm\\src\\icon\\bg-login.png"));
@@ -79,7 +89,7 @@ public class TelaLogin {
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBackground(new Color(25, 118, 211));
-		panel_1.setBounds(441, -29, 446, 483);
+		panel_1.setBounds(441, -29, 460, 520);
 		frame.getContentPane().add(panel_1);
 		panel_1.add(lblNewLabel_1);
 
@@ -163,16 +173,10 @@ public class TelaLogin {
 		lblCadastrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				UsuarioController usuarioController = new UsuarioController();
-				UsuarioVO novoUsuario = new UsuarioVO();
-				try {
-					usuarioController.cadastrarUsuarioController(novoUsuario);
-
-					JOptionPane.showMessageDialog(null, "Erro ao realizar cadastro!", "Erro",
-							JOptionPane.INFORMATION_MESSAGE);
-				} catch (Exception excecao) {
-					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-				}
+				telaCadastro = new TelaCadastroUsuario();			
+				//tornar o cadastro visível e o login invisível
+				telaCadastro.tornarVisivelForaDoFrame(telaCadastro);
+				frame.setVisible(false);			
 			}
 		});
 
@@ -226,6 +230,18 @@ public class TelaLogin {
 		lblShow.setIcon(new ImageIcon("D:\\Downloads\\.opera\\LoginForm\\src\\icon\\icons8_invisible_20px_1.png"));
 		lblShow.setBounds(399, 287, 29, 24);
 		panel_1.add(lblShow);
+		
+		JLabel lblNewLabel_6 = new JLabel("X");
+		lblNewLabel_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		lblNewLabel_6.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblNewLabel_6.setForeground(new Color(255, 255, 255));
+		lblNewLabel_6.setBounds(440, 33, 10, 21);
+		panel_1.add(lblNewLabel_6);
 
 	}
 }
