@@ -10,56 +10,51 @@ import model.vo.UsuarioVO;
 
 public class UsuarioDAO {
 
-		public UsuarioVO realizarLogin(UsuarioVO usuarioVO) {
-			Connection conn = Banco.getConnection();
-			Statement stmt = Banco.getStatement(conn);
-			ResultSet resultado = null;
+	public UsuarioVO realizarLogin(UsuarioVO usuarioVO) {
+		Connection conn = Banco.getConnection();
+		Statement stmt = Banco.getStatement(conn);
+		ResultSet resultado = null;
 
-			String sql = " SELECT U.IDUSUARIO, U.SENHA, U.EMAIL " + " FROM	USUARIO U "
-					+ " WHERE	U.EMAIL LIKE '" + usuarioVO.getEmail() + "' " + " AND U.SENHA LIKE '" + usuarioVO.getSenha()
-					+ "' ";
-			try {
-				resultado = stmt.executeQuery(sql);
-				if (resultado.next()) {
+		String sql = " SELECT U.IDUSUARIO, U.SENHA, U.EMAIL " + " FROM	USUARIO U " + " WHERE	U.EMAIL LIKE '"
+				+ usuarioVO.getEmail() + "' " + " AND U.SENHA LIKE '" + usuarioVO.getSenha() + "' ";
+		try {
+			resultado = stmt.executeQuery(sql);
+			if (resultado.next()) {
 
-					usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
-					usuarioVO.setNome(resultado.getString(2));
-					usuarioVO.setEmail(resultado.getString(3));
-					usuarioVO.setSenha(resultado.getString(4));
-				}
-			} catch (SQLException e) {
-				System.out.println("Erro ao realizar login! \nCausa: " + e.getMessage());
-			} finally {
-				Banco.closeResultSet(resultado);
-				Banco.closeConnection(conn);
-				Banco.closeStatement(stmt);
+				usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
+				usuarioVO.setNome(resultado.getString(2));
+				usuarioVO.setEmail(resultado.getString(3));
+				usuarioVO.setSenha(resultado.getString(4));
 			}
-			return usuarioVO;
+		} catch (SQLException e) {
+			System.out.println("Erro ao realizar login! \nCausa: " + e.getMessage());
+		} finally {
+			Banco.closeResultSet(resultado);
+			Banco.closeConnection(conn);
+			Banco.closeStatement(stmt);
 		}
-
-		public UsuarioVO cadastrarUsuarioDAO(UsuarioVO usuarioVO) {
-			String sql = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
-			Connection conn = Banco.getConnection();
-			PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, sql);
-			try {
-				pstmt.setString(1, usuarioVO.getNome());
-				pstmt.setString(2, usuarioVO.getEmail());
-				pstmt.setString(3, usuarioVO.getSenha());
-				pstmt.execute();
-
-				ResultSet resultado = pstmt.getGeneratedKeys();
-				if (resultado.next()) {
-					usuarioVO.setIdUsuario(resultado.getInt(1));
-				}
-			} catch (SQLException e) {
-				System.out.println("Erro ao cadastrar usuário! \nCausa: " + e.getMessage());
-			} finally {
-				Banco.closeStatement(pstmt);
-				Banco.closeConnection(conn);
-			}
-			return usuarioVO;
-		}
-	
+		return usuarioVO;
 	}
 
+	public UsuarioVO cadastrarUsuarioDAO(UsuarioVO novoUsuario) {
+		Connection conexao = Banco.getConnection();
+		String sql = " INSERT INTO USUARIO(NOME, EMAIL, SENHA) " + " VALUES (?,?,?) ";
+		PreparedStatement stmt = Banco.getPreparedStatementWithPk(conexao, sql);
 
+		try {
+			stmt.setString(1, novoUsuario.getNome());
+			stmt.setString(2, novoUsuario.getEmail());
+			stmt.setString(3, novoUsuario.getSenha());
+			stmt.execute();
+
+			ResultSet resultado = stmt.getGeneratedKeys();
+			if (resultado.next()) {
+				novoUsuario.setIdUsuario(resultado.getInt(1));
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro ao inserir novo usuarioooooo!" + "\nCausa: " + e.getMessage());
+		}
+		return novoUsuario;
+	}
+
+}
