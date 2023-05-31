@@ -28,12 +28,13 @@ import java.awt.event.ActionEvent;
 public class TelaCadastroUsuario {
 
 	private JFrame frame;
-	private JTextField textField;
-	private JPasswordField passwordField;
+	private JTextField txtEmail;
+	private JPasswordField txtSenha;
 	private JTextField txtNome;
-	
-	private UsuarioController usuarioControler;
+
+	private UsuarioController usuarioController;
 	private UsuarioVO usuarioVO;
+	private TelaLogin telaLogin;
 
 	/**
 	 * Launch the application.
@@ -61,56 +62,56 @@ public class TelaCadastroUsuario {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {		
+	private void initialize() {
 		frame = new JFrame();
-		
+
 		frame.setUndecorated(true);
-		
+
 		frame.setBounds(100, 100, 901, 491);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JPanel panel = new JPanel();
-		//mover componentes no painel
-	 	panel.setLayout(null);
+		// mover componentes no painel
+		panel.setLayout(null);
 		panel.setBackground(new Color(25, 118, 211));
 		panel.setBounds(0, 0, 901, 491);
 		frame.getContentPane().add(panel);
-		
+
 		JLabel lblEmail = new JLabel("E-mail");
 		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblEmail.setBounds(264, 139, 386, 24);
 		panel.add(lblEmail);
-		
+
 		JLabel lblSenha = new JLabel("Senha");
 		lblSenha.setForeground(Color.WHITE);
 		lblSenha.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblSenha.setBounds(264, 216, 386, 24);
 		panel.add(lblSenha);
-		
-		textField = new JTextField();
-		textField.setSelectionColor(new Color(25, 118, 211));
-		textField.setSelectedTextColor(new Color(25, 118, 211));
-		textField.setForeground(new Color(25, 118, 211));
-		textField.setDisabledTextColor(new Color(25, 118, 211));
-		textField.setColumns(10);
-		textField.setBackground(Color.WHITE);
-		textField.setBounds(264, 173, 347, 19);
-		panel.add(textField);
-		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(264, 250, 347, 19);
-		panel.add(passwordField);
-		
+
+		txtEmail = new JTextField();
+		txtEmail.setSelectionColor(new Color(25, 118, 211));
+		txtEmail.setSelectedTextColor(new Color(25, 118, 211));
+		txtEmail.setForeground(new Color(25, 118, 211));
+		txtEmail.setDisabledTextColor(new Color(25, 118, 211));
+		txtEmail.setColumns(10);
+		txtEmail.setBackground(Color.WHITE);
+		txtEmail.setBounds(264, 173, 347, 19);
+		panel.add(txtEmail);
+
+		txtSenha = new JPasswordField();
+		txtSenha.setBounds(264, 250, 347, 19);
+		panel.add(txtSenha);
+
 		JLabel lblDisable = new JLabel("");
 		lblDisable.setBounds(621, 252, 29, 24);
 		panel.add(lblDisable);
-		
+
 		JLabel lblShow = new JLabel("");
 		lblShow.setBounds(621, 252, 29, 24);
 		panel.add(lblShow);
-		
+
 		txtNome = new JTextField();
 		txtNome.setSelectionColor(new Color(25, 118, 211));
 		txtNome.setSelectedTextColor(new Color(25, 118, 211));
@@ -120,22 +121,28 @@ public class TelaCadastroUsuario {
 		txtNome.setBackground(Color.WHITE);
 		txtNome.setBounds(264, 97, 347, 19);
 		panel.add(txtNome);
-		
+
 		JLabel lblNome = new JLabel("Nome");
 		lblNome.setForeground(Color.WHITE);
 		lblNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNome.setBounds(264, 63, 386, 24);
 		panel.add(lblNome);
-		
+
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				usuarioControler = new UsuarioController();
+				usuarioController = new UsuarioController();
 				usuarioVO = new UsuarioVO();
-				try {
-					usuarioControler.cadastrarUsuarioController(usuarioVO);
+				telaLogin = new TelaLogin();
 
-					JOptionPane.showMessageDialog(null, "Erro ao realizar cadastro!", "Erro",
+				try {
+					usuarioVO.setEmail(txtEmail.getText());
+					usuarioVO.setNome(txtNome.getText());
+					usuarioVO.setSenha(txtSenha.getText());
+
+					usuarioController.cadastrarUsuarioController(usuarioVO);
+
+					JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!", "Erro",
 							JOptionPane.INFORMATION_MESSAGE);
 				} catch (Exception excecao) {
 					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -146,14 +153,23 @@ public class TelaCadastroUsuario {
 		btnCadastrar.setForeground(new Color(25, 118, 211));
 		btnCadastrar.setBounds(395, 323, 85, 21);
 		panel.add(btnCadastrar);
-		
+
 		JLabel lblNewLabel = new JLabel(" voltar");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				telaLogin = new TelaLogin();
+				telaLogin.tornarVisivelLogin(telaLogin);
+				frame.setVisible(false);
+
+			}
+		});
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 10));
 		lblNewLabel.setIcon(new ImageIcon("D:\\Downloads\\.opera\\deixou.png"));
-		lblNewLabel.setBounds(10, -19, 111, 88);
+		lblNewLabel.setBounds(10, 10, 60, 24);
 		panel.add(lblNewLabel);
-		
+
 		JLabel lblNewLabel_6 = new JLabel("X");
 		lblNewLabel_6.addMouseListener(new MouseAdapter() {
 			@Override
@@ -165,13 +181,14 @@ public class TelaCadastroUsuario {
 		lblNewLabel_6.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblNewLabel_6.setBounds(881, 0, 20, 21);
 		panel.add(lblNewLabel_6);
-		
-		
-	}
-	
-	public void tornarVisivelForaDoFrame(TelaCadastroUsuario telaVisivel) {
-			frame.setVisible(true);
-		}
+
 	}
 
+	// perguntar ao professor como fazer para o botao
+	// de "cadastrar" voltar para a tela de login
+	// sempre que o cadastro for bem sucedido;
 
+	public void tornarVisivelCadastro(TelaCadastroUsuario telaVisivel) {
+		frame.setVisible(true);
+	}
+}

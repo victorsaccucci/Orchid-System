@@ -14,13 +14,19 @@ public class UsuarioDAO {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
-
-		String sql = " SELECT U.IDUSUARIO, U.SENHA, U.EMAIL " + " FROM	USUARIO U " + " WHERE	U.EMAIL LIKE '"
-				+ usuarioVO.getEmail() + "' " + " AND U.SENHA LIKE '" + usuarioVO.getSenha() + "' ";
+	
+		
+		String sql = " select "
+				+ " usuario.idusuario, "
+			    + " usuario.nome, "
+				+ " usuario.email, "
+			    + " usuario.senha "
+			+ " from usuario "
+			+ " where usuario.email like '" + usuarioVO.getEmail() + "' "
+			+ " and usuario.senha like '" + usuarioVO.getSenha() + "' ";
 		try {
 			resultado = stmt.executeQuery(sql);
-			if (resultado.next()) {
-
+			if (resultado.next()) {	
 				usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
 				usuarioVO.setNome(resultado.getString(2));
 				usuarioVO.setEmail(resultado.getString(3));

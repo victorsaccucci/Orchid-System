@@ -33,9 +33,10 @@ public class TelaLogin {
 
 	private JLabel lblDisable;
 	private JLabel lblShow;
-	
+
 	private TelaCadastroUsuario telaCadastro;
-	
+	private DrawerMenu telaMenuPrincipal;
+
 	/**
 	 * Launch the application.
 	 */
@@ -66,20 +67,17 @@ public class TelaLogin {
 		JPanel panel = new JPanel();
 		frame = new JFrame();
 
-		
-		//tirar botoes
-	 	frame.setUndecorated(true);
-	 	
-	 	//mover componentes no painel
-	 	panel.setLayout(null);
-	 	
+		// tirar botoes
+		frame.setUndecorated(true);
+
+		// mover componentes no painel
+		panel.setLayout(null);
+
 		frame.setBounds(100, 100, 901, 491);
 		frame.getContentPane().setLayout(null);
 
-		
 		panel.setBounds(-26, -29, 466, 520);
 		frame.getContentPane().add(panel);
-		
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("D:\\Downloads\\.opera\\LoginForm\\src\\icon\\bg-login.png"));
@@ -145,16 +143,23 @@ public class TelaLogin {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
 				UsuarioController usuarioController = new UsuarioController();
 				UsuarioVO novoUsuario = new UsuarioVO();
-				try {
-					usuarioController.realizarLoginController(novoUsuario);
+				telaMenuPrincipal = new DrawerMenu();
 
-					JOptionPane.showMessageDialog(null, "Erro ao realizar login!", "Erro",
-							JOptionPane.INFORMATION_MESSAGE);
-				} catch (Exception excecao) {
-					JOptionPane.showMessageDialog(null, excecao.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-				}
+//				String email = txtEmail.getText();
+//				String senha = String.valueOf(txtSenha.getPassword());
+//
+//				if (email.equals(usuarioController.realizarLoginController(novoUsuario).getEmail()) && 
+//						(senha.equals(usuarioController.realizarLoginController(novoUsuario).getSenha()))) {
+//					
+				telaMenuPrincipal.tornarVisivelMenuPrincipal(telaMenuPrincipal);
+				frame.setVisible(false);
+
+//				} else {
+//					JOptionPane.showMessageDialog(null, "Campos incorretos!", "null", JOptionPane.ERROR_MESSAGE);
+//				}
 			}
 		});
 		btnEntrar.setBackground(new Color(255, 255, 255));
@@ -173,10 +178,11 @@ public class TelaLogin {
 		lblCadastrar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				telaCadastro = new TelaCadastroUsuario();			
-				//tornar o cadastro visível e o login invisível
-				telaCadastro.tornarVisivelForaDoFrame(telaCadastro);
-				frame.setVisible(false);			
+				telaCadastro = new TelaCadastroUsuario();
+
+				// tornar o cadastro visível e o login invisível
+				telaCadastro.tornarVisivelCadastro(telaCadastro);
+				frame.setVisible(false);
 			}
 		});
 
@@ -230,7 +236,7 @@ public class TelaLogin {
 		lblShow.setIcon(new ImageIcon("D:\\Downloads\\.opera\\LoginForm\\src\\icon\\icons8_invisible_20px_1.png"));
 		lblShow.setBounds(399, 287, 29, 24);
 		panel_1.add(lblShow);
-		
+
 		JLabel lblNewLabel_6 = new JLabel("X");
 		lblNewLabel_6.addMouseListener(new MouseAdapter() {
 			@Override
@@ -243,5 +249,10 @@ public class TelaLogin {
 		lblNewLabel_6.setBounds(440, 33, 10, 21);
 		panel_1.add(lblNewLabel_6);
 
+	}
+
+	// tornar o login visível e o cadastro invisível
+	public void tornarVisivelLogin(TelaLogin telaVisivel) {
+		frame.setVisible(true);
 	}
 }
