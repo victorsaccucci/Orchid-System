@@ -20,4 +20,31 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib/TimingFramework-0.55.jar</name>
+			<type>1</type>
+			<location>D:/Documents/lib Raven/lib/TimingFramework-0.55.jar</location>
+		</link>
+		<link>
+			<name>main/java/effect/RippleEffect.java</name>
+			<type>1</type>
+			<location>D:/Documents/lib Raven/RippleEffect.java</location>
+		</link>
+		<link>
+			<name>main/java/scroll/PolygonCorner.java</name>
+			<type>1</type>
+			<location>D:/Documents/lib Raven/PolygonCorner.java</location>
+		</link>
+		<link>
+			<name>main/java/scroll/ScrollBarWin11UI.java</name>
+			<type>1</type>
+			<location>D:/Documents/lib Raven/ScrollBarWin11UI.java</location>
+		</link>
+		<link>
+			<name>main/java/scroll/ScrollPaneWin11.java</name>
+			<type>1</type>
+			<location>D:/Documents/lib Raven/ScrollPaneWin11.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

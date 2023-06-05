@@ -12,6 +12,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import controller.UsuarioController;
+import model.exception.ExceptionSystem;
 import model.vo.UsuarioVO;
 
 import javax.swing.JCheckBox;
@@ -35,7 +36,7 @@ public class TelaLogin {
 	private JLabel lblShow;
 
 	private TelaCadastroUsuario telaCadastro;
-	private DrawerMenu telaMenuPrincipal;
+	private TelaMenuPrincipal telaMenuPrincipal;
 
 	/**
 	 * Launch the application.
@@ -143,23 +144,20 @@ public class TelaLogin {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String email = txtEmail.getText();
+				String senha = String.valueOf(txtSenha.getPassword());
+				TelaMenuPrincipal teste = new TelaMenuPrincipal();
 
 				UsuarioController usuarioController = new UsuarioController();
-				UsuarioVO novoUsuario = new UsuarioVO();
-				telaMenuPrincipal = new DrawerMenu();
-
-//				String email = txtEmail.getText();
-//				String senha = String.valueOf(txtSenha.getPassword());
-//
-//				if (email.equals(usuarioController.realizarLoginController(novoUsuario).getEmail()) && 
-//						(senha.equals(usuarioController.realizarLoginController(novoUsuario).getSenha()))) {
-//					
-				telaMenuPrincipal.tornarVisivelMenuPrincipal(telaMenuPrincipal);
-				frame.setVisible(false);
-
-//				} else {
-//					JOptionPane.showMessageDialog(null, "Campos incorretos!", "null", JOptionPane.ERROR_MESSAGE);
-//				}
+				
+				try {
+					UsuarioVO usuarioAutenticado = usuarioController.realizarLoginController(email, senha);
+					frame.setVisible(false);
+					teste.tornarVisivelMenuPrincipal(teste);
+					
+				} catch (ExceptionSystem e1) {
+					JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+				}
 			}
 		});
 		btnEntrar.setBackground(new Color(255, 255, 255));

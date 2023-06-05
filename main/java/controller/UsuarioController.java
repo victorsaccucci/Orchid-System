@@ -7,29 +7,28 @@ import model.vo.UsuarioVO;
 public class UsuarioController {
 	UsuarioBO usuarioBO = new UsuarioBO();
 
-	public UsuarioVO realizarLoginController(UsuarioVO usuarioVO) {
-		return usuarioBO.realizarLoginBO(usuarioVO);
-
-	}
-	
-	public boolean verificaLogin(UsuarioVO usuarioVO) {
-		boolean login = false;
+	public UsuarioVO realizarLoginController(String email, String senha) throws ExceptionSystem {
 		
-		if(this.camposObrigatoriosLogin(usuarioVO)) {
-			login = realizarLoginController(usuarioVO) != null;
-		}if(login) {
-			System.out.println("Logado com sucesso");
-		}else {
-			System.out.println("Erro ao realizar login");
+		String validacao = "";
+		
+		if(email == null || email.trim().isEmpty()) {
+			validacao += "Informe o email";
 		}
 		
-		return login;
+		if(senha == null || senha.trim().isEmpty()) {
+			validacao += "Informe a senha";
+		}
+		
+		if(!validacao.isEmpty()) {
+			//Alguma regra de validação foi violada
+			throw new ExceptionSystem(validacao);
+		}
+		
+		return usuarioBO.realizarLoginBO(email, senha);
 	}
-
+	
 	public UsuarioVO cadastrarUsuarioController(UsuarioVO usuarioVO) throws ExceptionSystem {
-
 		this.validarCamposObrigatorios(usuarioVO);
-
 		return usuarioBO.cadastrarUsuarioBO(usuarioVO);
 	}
 
@@ -49,18 +48,4 @@ public class UsuarioController {
 			throw new ExceptionSystem(mensagemValidacao);
 		}
 	}
-
-	public boolean camposObrigatoriosLogin(UsuarioVO usuarioVO) {
-		boolean resultado = false;
-		if (usuarioVO.getEmail() == null || usuarioVO.getEmail().isEmpty()) {
-			System.out.println("O campo e-mail é obrigatório.");
-			resultado = false;
-			if (usuarioVO.getSenha() == null || usuarioVO.getSenha().isEmpty()) {
-				System.out.println("O campo senha é obrigatório.");
-				resultado = false;
-			}
-		}
-		return resultado;
-	}
-
 }

@@ -10,11 +10,12 @@ import model.vo.UsuarioVO;
 
 public class UsuarioDAO {
 
-	public UsuarioVO realizarLogin(UsuarioVO usuarioVO) {
+	public UsuarioVO realizarLogin(String email, String senha) {
 		Connection conn = Banco.getConnection();
 		Statement stmt = Banco.getStatement(conn);
 		ResultSet resultado = null;
-	
+		
+		UsuarioVO usuarioAutenticado = null;
 		
 		String sql = " select "
 				+ " usuario.idusuario, "
@@ -22,15 +23,16 @@ public class UsuarioDAO {
 				+ " usuario.email, "
 			    + " usuario.senha "
 			+ " from usuario "
-			+ " where usuario.email like '" + usuarioVO.getEmail() + "' "
-			+ " and usuario.senha like '" + usuarioVO.getSenha() + "' ";
+			+ " where usuario.email like '" + email + "' "
+			+ " and usuario.senha like '" + senha + "' ";
 		try {
 			resultado = stmt.executeQuery(sql);
 			if (resultado.next()) {	
-				usuarioVO.setIdUsuario(Integer.parseInt(resultado.getString(1)));
-				usuarioVO.setNome(resultado.getString(2));
-				usuarioVO.setEmail(resultado.getString(3));
-				usuarioVO.setSenha(resultado.getString(4));
+				usuarioAutenticado = new UsuarioVO();
+				usuarioAutenticado.setIdUsuario(Integer.parseInt(resultado.getString(1)));
+				usuarioAutenticado.setNome(resultado.getString(2));
+				usuarioAutenticado.setEmail(resultado.getString(3));
+				usuarioAutenticado.setSenha(resultado.getString(4));
 			}
 		} catch (SQLException e) {
 			System.out.println("Erro ao realizar login! \nCausa: " + e.getMessage());
@@ -39,7 +41,7 @@ public class UsuarioDAO {
 			Banco.closeConnection(conn);
 			Banco.closeStatement(stmt);
 		}
-		return usuarioVO;
+		return usuarioAutenticado;
 	}
 
 	public UsuarioVO cadastrarUsuarioDAO(UsuarioVO novoUsuario) {
